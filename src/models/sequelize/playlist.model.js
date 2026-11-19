@@ -13,6 +13,19 @@ export const PlaylistModel = sequelize.define("Playlist", {
     defaultValue: "private",
   },
   // TODO 1: `owner_id`: tipo `INTEGER`, obligatorio (`allowNull`) y clave foránea (`references`) hacia el `id` del usuario (`UserModel`) dueño de la playlist.
+  owner_id:{
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            unique: true
+        },
 });
 
 // TODO 2: Relacionar `UserModel` y `PlaylistModel` (1:N, en ambos sentidos): un usuario tiene muchas playlists y cada playlist pertenece a un usuario. Alias: `playlists` (desde `UserModel`) y `owner` (desde `PlaylistModel`). La relación debe usar el campo `owner_id` de `PlaylistModel` para unirlos.
+UserModel.hasMany(PlaylistModel, {
+    foreignKey: "playlists_id",
+    as: "Playlist",
+});
+PlaylistModel.belongsTo(UserModel, {
+    foreignKey: "playlists_id",
+    as: "User"
+});
